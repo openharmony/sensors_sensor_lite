@@ -1,12 +1,12 @@
 {
-  "name": "@openharmony/sensor_lite",
+  "name": "@ohos/sensor_lite",
   "description": "Obtaining sensor data",
   "version": "3.1",
   "license": "Apache License 2.0",
   "component": {
     "name": "sensor_lite",
     "subsystem": "sensors",
-    "syscap": [],
+    "syscap": ["SystemCapability.Sensors.Sensor_lite"],
     "features": [],
     "adapted_system_type": [ "small" ],
     "rom": "92KB",
