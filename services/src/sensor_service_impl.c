@@ -21,10 +21,11 @@
 
 #include "liteipc_adapter.h"
 #include "sensor_service.h"
+#include "sensor_type.h"
 
-static struct SensorInfos *g_sensorLists;
+static struct SensorInformation *g_sensorLists;
 static int32_t g_sensorListsLength;
-static struct SensorInterface *g_sensorDevice;
+const struct SensorInterface *g_sensorDevice;
 static SvcIdentity g_svcIdentity = {
     .handle = 0,
     .token = 0,
@@ -54,7 +55,7 @@ const char *SENSOR_GetName(Service *service)
     return SENSOR_SERVICE;
 }
 
-static int SensorDataCallback(const SensorEvent *event)
+static int SensorDataCallback(const struct SensorEvent *event)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
     if ((event == NULL) || (event->dataLen == 0)) {
@@ -66,8 +67,8 @@ static int SensorDataCallback(const SensorEvent *event)
     uint8_t data[IPC_IO_DATA_MAX];
     IpcIoInit(&io, data, IPC_IO_DATA_MAX, IPC_MAX_OBJECTS);
     BuffPtr eventBuff = {
-        .buffSz = (uint32_t)(sizeof(SensorEvent)),
-        .buff = event
+        .buffSz = (uint32_t)(sizeof(struct SensorEvent)),
+        .buff = (void *)(event)
     };
     BuffPtr sensorDataBuff = {
         .buffSz = (uint32_t)(event->dataLen),
@@ -84,7 +85,7 @@ static int SensorDataCallback(const SensorEvent *event)
     return SENSOR_OK;
 }
 
-void SetSvcIdentity(const IpcIo *req, const IpcIo *reply)
+void SetSvcIdentity(IpcIo *req, const IpcIo *reply)
 {
     SvcIdentity *sid = IpcIoPopSvc(req);
     if (sid == NULL) {
@@ -233,7 +234,7 @@ int32_t SubscribeSensorImpl(int32_t sensorId, const SensorUser *user)
             SENSOR_SERVICE, __func__);
         return SENSOR_ERROR_INVALID_PARAM;
     }
-    int32_t ret = g_sensorDevice->Register(0, SensorDataCallback);
+    int32_t ret = g_sensorDevice->Register(0, (RecordDataCallback)SensorDataCallback);
     if (ret != 0) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s register sensor user failed, ret: %d",
             SENSOR_SERVICE, __func__, ret);

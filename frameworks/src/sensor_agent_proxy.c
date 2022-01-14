@@ -15,9 +15,11 @@
 
 #include "sensor_agent_proxy.h"
 
-#include <stdint.h>
+#include <log.h>
+#include <securec.h>
 #include <stdlib.h>
-#include <string.h>
+#include "sensor_agent.h"
+#include "sensor_service.h"
 
 static SensorInfo *g_sensorLists;
 static SensorEvent *g_sensorEvent;
@@ -187,7 +189,7 @@ int32_t Notify(IOwner owner, int32_t code, IpcIo *reply)
     }
 }
 
-void DispatchData(const SensorEvent *sensorEvent)
+void DispatchData(SensorEvent *sensorEvent)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "%s begin", __func__);
     if (sensorEvent == NULL) {

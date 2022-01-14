@@ -52,7 +52,7 @@ int32_t SubscribeSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *r
 int32_t UnsubscribeSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply);
 int32_t SetModeInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply);
 int32_t SetOptionInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply);
-void SetSvcIdentity(const IpcIo *req, const IpcIo *reply);
+void SetSvcIdentity(IpcIo *req, const IpcIo *reply);
 #ifdef __cplusplus
 #if __cplusplus
 }

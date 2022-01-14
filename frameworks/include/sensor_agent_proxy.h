@@ -21,11 +21,8 @@
 #include <iproxy_client.h>
 #include <iunknown.h>
 #include "liteipc_adapter.h"
-#include <log.h>
 #include "samgr_lite.h"
-#include "sensor_agent.h"
 #include "sensor_agent_type.h"
-#include "sensor_service.h"
 #include "serializer.h"
 
 #ifdef __cplusplus

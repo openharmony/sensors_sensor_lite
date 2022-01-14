@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 
-#include "log.h"
+#include <stdio.h>
+#include <unistd.h>
 #include "samgr_lite.h"
 
 void __attribute__((weak)) OHOS_SystemInit(void)
@@ -24,5 +25,7 @@ void __attribute__((weak)) OHOS_SystemInit(void)
 int main()
 {
     OHOS_SystemInit();
-    pause();
+    // pause only returns when a signal was caught and the signal-catching function returned.
+    // pause only returns -1, no need to process the return value.
+    (void)pause();
 }
