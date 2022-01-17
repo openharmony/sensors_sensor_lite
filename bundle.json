@@ -3,6 +3,9 @@
   "description": "Obtaining sensor data",
   "version": "3.1",
   "license": "Apache License 2.0",
+  "segment": {
+    "destPath": "base/sensors/sensor_lite"
+  },
   "component": {
     "name": "sensor_lite",
     "subsystem": "sensors",
