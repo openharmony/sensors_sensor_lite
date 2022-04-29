@@ -20,7 +20,7 @@
 
 #include <iproxy_client.h>
 #include <iunknown.h>
-#include "liteipc_adapter.h"
+#include "ipc_skeleton.h"
 #include "samgr_lite.h"
 #include "sensor_agent_type.h"
 #include "serializer.h"

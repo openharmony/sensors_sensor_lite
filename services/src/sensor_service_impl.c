@@ -18,8 +18,7 @@
 #include <securec.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "liteipc_adapter.h"
+#include "ipc_skeleton.h"
 #include "sensor_service.h"
 #include "sensor_type.h"
 
@@ -64,36 +63,30 @@ static int SensorDataCallback(const struct SensorEvent *event)
         return SENSOR_ERROR_INVALID_ID;
     }
     IpcIo io;
-    uint8_t data[IPC_IO_DATA_MAX];
-    IpcIoInit(&io, data, IPC_IO_DATA_MAX, IPC_MAX_OBJECTS);
-    BuffPtr eventBuff = {
-        .buffSz = (uint32_t)(sizeof(struct SensorEvent)),
-        .buff = (void *)(event)
-    };
-    BuffPtr sensorDataBuff = {
-        .buffSz = (uint32_t)(event->dataLen),
-        .buff = event->data
-    };
-    IpcIoPushDataBuff(&io, &eventBuff);
-    IpcIoPushDataBuff(&io, &sensorDataBuff);
-    if (!IpcIoAvailable(&io)) {
-        HILOG_ERROR(HILOG_MODULE_APP, "%s TransmitServiceId ipc failed", __func__);
-        return SENSOR_ERROR_INVALID_PARAM;
-    }
-    IpcContext context;
-    SendRequest(&context, g_svcIdentity, 0, &io, NULL, LITEIPC_FLAG_ONEWAY, NULL);
+    uint8_t data[MAX_IO_SIZE];
+    IpcIoInit(&io, data, MAX_IO_SIZE, IPC_MAX_OBJECTS);
+
+    WriteUint32(&io, (uint32_t)(sizeof(struct SensorEvent)));
+    WriteBuffer(&io, (void *)(event), (uint32_t)(sizeof(struct SensorEvent)));
+    WriteUint32(&io, (uint32_t)(event->dataLen));
+    WriteBuffer(&io, (void *)(event->data), (uint32_t)(event->dataLen));
+    MessageOption option;
+    MessageOptionInit(&option);
+    option.flags = TF_OP_ASYNC;
+    SendRequest(g_svcIdentity, 0, &io, NULL, option, NULL);
     return SENSOR_OK;
 }
 
 void SetSvcIdentity(IpcIo *req, const IpcIo *reply)
 {
-    SvcIdentity *sid = IpcIoPopSvc(req);
-    if (sid == NULL) {
-        HILOG_ERROR(HILOG_MODULE_APP, "%s sid is NULL", __func__);
+    SvcIdentity sid;
+    bool ret = ReadRemoteObject(req, &sid);
+    if (!ret) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%s ReadRemoteObject failed ", __func__);
         return;
     }
-    g_svcIdentity.handle = sid->handle;
-    g_svcIdentity.token = sid->token;
+    g_svcIdentity.handle = sid.handle;
+    g_svcIdentity.token = sid.token;
 }
 
 BOOL Initialize(Service *service, Identity identity)
