@@ -37,8 +37,7 @@ shared_library("sensor_client") {
     "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
     "//foundation/distributedschedule/samgr_lite/interfaces/kits/communication/broadcast",
     "//foundation/distributedschedule/samgr_lite/samgr/source",
-    "//foundation/communication/ipc_lite/frameworks/liteipc/include",
-    "//foundation/communication/ipc_lite/interfaces/kits",
+    "//foundation/communication/ipc/interfaces/innerkits/c/ipc/include",
     "//base/sensors/sensor_lite/services/include",
   ]
 

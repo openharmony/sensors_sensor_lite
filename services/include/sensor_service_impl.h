@@ -17,7 +17,7 @@
 #define SENSOR_SERVICE_INTERFACE_H
 
 #include "iproxy_server.h"
-#include "liteipc_adapter.h"
+#include "ipc_skeleton.h"
 #include "sensor_if.h"
 #include "sensor_service.h"
 

@@ -17,7 +17,7 @@
     "deps": {
       "components": [
         "samgr_lite",
-        "ipc_lite",
+        "ipc",
         "utils_base",
         "peripheral_sensor"
       ],
