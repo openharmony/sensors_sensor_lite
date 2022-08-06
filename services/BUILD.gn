@@ -25,10 +25,10 @@ executable("sensor_service") {
     "./include",
     "//third_party/bounds_checking_function/include",
     "//utils/native/lite/include",
-    "//foundation/distributedschedule/samgr_lite/interfaces/kits/registry",
-    "//foundation/distributedschedule/samgr_lite/interfaces/kits/samgr",
-    "//foundation/distributedschedule/samgr_lite/interfaces/kits/communication/broadcast",
-    "//foundation/distributedschedule/samgr_lite/samgr/source",
+    "//foundation/systemabilitymgr/samgr_lite/interfaces/kits/registry",
+    "//foundation/systemabilitymgr/samgr_lite/interfaces/kits/samgr",
+    "//foundation/systemabilitymgr/samgr_lite/interfaces/kits/communication/broadcast",
+    "//foundation/systemabilitymgr/samgr_lite/samgr/source",
     "//foundation/communication/ipc/interfaces/innerkits/c/ipc/include",
     "//foundation/communication/ipc/ipc/native/c/manager/include",
     "//foundation/communication/ipc/services/dbinder/c/include",
@@ -39,6 +39,6 @@ executable("sensor_service") {
   deps = [
     "//drivers/peripheral/sensor/hal:hdi_sensor",
     "//foundation/communication/ipc/interfaces/innerkits/c/ipc:ipc_single",
-    "//foundation/distributedschedule/samgr_lite/samgr:samgr",
+    "//foundation/systemabilitymgr/samgr_lite/samgr:samgr",
   ]
 }
