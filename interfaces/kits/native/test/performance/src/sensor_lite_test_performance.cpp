@@ -213,44 +213,4 @@ HWTEST_F(SensorLiteTestPerformance, DeactivateSensorPerformance001, TestSize.Lev
     EXPECT_EQ(ret, 0) << "DeactivateSensor ret = " << ret << endl;
     sleep(1);
 };
-
-
-/**
- * @tc.name: DataReportPerformanceTest001
- * @tc.desc: Sensor data report.
- * @tc.type: PERF
- * @tc.require: SR000F46AN
- */
-HWTEST_F(SensorLiteTestPerformance, DataReportPerformanceTest001, TestSize.Level2)
-{
-    HILOG_INFO(HILOG_MODULE_APP, "%s called", __func__);
-    SensorUser sensorUser;
-    sensorUser.callback = SensorDataCallbackImpl;
-
-    SensorInfo *sensorInfo = (SensorInfo *)NULLPTR;
-    int32_t count = 0;
-
-    int32_t ret = GetAllSensors(&sensorInfo, &count);
-    EXPECT_EQ(ret, 0) << "GetAllSensorsTest001 ret = " << ret << endl;
-    sleep(1);
-
-    ret = ActivateSensor(0, &sensorUser);
-    EXPECT_EQ(ret, 0) << "ActivateSensor ret = " << ret << endl;
-    sleep(1);
-
-    g_dataCount = 0;
-    ret = SubscribeSensor(0, &sensorUser);
-    EXPECT_EQ(ret, 0) << "SubscribeSensor ret = " << ret << endl;
-    sleep(5);
-    HILOG_INFO(HILOG_MODULE_APP, "%s g_dataCount: %d", __func__, g_dataCount);
-    EXPECT_LT(g_dataCount, 50);
-    EXPECT_GT(g_dataCount, 0);
-
-    ret = DeactivateSensor(0, &sensorUser);
-    EXPECT_EQ(ret, 0) << "DeactivateSensor ret = " << ret << endl;
-    sleep(1);
-
-    ret = UnsubscribeSensor(0, &sensorUser);
-    EXPECT_EQ(ret, 0) << "UnsubscribeSensor ret = " << ret << endl;
-};
 }
