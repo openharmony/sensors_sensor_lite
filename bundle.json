@@ -9,7 +9,7 @@
   "component": {
     "name": "sensor_lite",
     "subsystem": "sensors",
-    "syscap": ["SystemCapability.Sensors.Sensor.Lite"],
+    "syscap": [],
     "features": [],
     "adapted_system_type": [ "small" ],
     "rom": "92KB",
