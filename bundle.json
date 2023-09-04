@@ -18,8 +18,7 @@
       "components": [
         "samgr_lite",
         "ipc",
-        "utils_base",
-        "peripheral_sensor"
+        "utils_base"
       ],
       "third_party": []
     },
