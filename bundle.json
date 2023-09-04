@@ -18,7 +18,8 @@
       "components": [
         "samgr_lite",
         "ipc",
-        "utils_base"
+        "utils_base",
+        "hdi_sensor"
       ],
       "third_party": []
     },
