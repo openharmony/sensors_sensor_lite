@@ -49,7 +49,7 @@ int32_t ActivateSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *re
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
     WriteInt32(reply, SENSOR_SERVICE_ID_ActivateSensor);
-    int32_t sensorId;
+    int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     if (defaultApi == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s failed, defaultApi is null", SENSOR_SERVICE, __func__);
@@ -67,7 +67,7 @@ int32_t DeactivateSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
     WriteInt32(reply, SENSOR_SERVICE_ID_DeactivateSensor);
-    int32_t sensorId;
+    int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     if (defaultApi == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s failed, defaultApi is null", SENSOR_SERVICE, __func__);
@@ -85,7 +85,7 @@ int32_t SetBatchInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
     WriteInt32(reply, SENSOR_SERVICE_ID_SetBatchs);
-    int32_t sensorId;
+    int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     int64_t updateInterval;
     ReadInt64(req, &updateInterval);
@@ -107,7 +107,7 @@ int32_t SubscribeSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *r
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
     WriteInt32(reply, SENSOR_SERVICE_ID_SubscribeSensor);
-    int32_t sensorId;
+    int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     if (defaultApi == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s failed, defaultApi is null", SENSOR_SERVICE, __func__);
@@ -126,7 +126,7 @@ int32_t UnsubscribeSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo 
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
     WriteInt32(reply, SENSOR_SERVICE_ID_UnsubscribeSensor);
-    int32_t sensorId;
+    int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     if (defaultApi == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s failed, defaultApi is null", SENSOR_SERVICE, __func__);
@@ -144,9 +144,9 @@ int32_t SetModeInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
     WriteInt32(reply, SENSOR_SERVICE_ID_SetMode);
-    int32_t sensorId;
+    int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
-    int32_t mode;
+    int32_t mode = -1;
     ReadInt32(req, &mode);
     if (defaultApi == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s failed, defaultApi is null", SENSOR_SERVICE, __func__);
@@ -164,9 +164,9 @@ int32_t SetOptionInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
     WriteInt32(reply, SENSOR_SERVICE_ID_SetOption);
-    int32_t sensorId;
+    int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
-    int32_t option;
+    int32_t option = -1;
     ReadInt32(req, &option);
     if (defaultApi == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s failed, defaultApi is null", SENSOR_SERVICE, __func__);
