@@ -19,7 +19,7 @@
         "samgr_lite",
         "ipc",
         "utils_base",
-        "peripheral_sensor"
+        "hdi_sensor"
       ],
       "third_party": []
     },
