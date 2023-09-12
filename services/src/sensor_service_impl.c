@@ -100,7 +100,7 @@ BOOL Initialize(Service *service, Identity identity)
     }
     return TRUE;
 }
-#endif
+#endif // HAS_HDI_SENSOR_LITE_PRAT
 
 BOOL MessageHandle(Service *service, Request *msg)
 {
@@ -162,7 +162,7 @@ int32_t ActivateSensorImpl(int32_t sensorId, const SensorUser *user)
             SENSOR_SERVICE, __func__, ret);
         return ret;
     }
-#endif
+#endif // HAS_HDI_SENSOR_LITE_PRAT
     return SENSOR_OK;
 }
 
@@ -192,7 +192,7 @@ int32_t DeactivateSensorImpl(int32_t sensorId, const SensorUser *user)
             SENSOR_SERVICE, __func__, ret);
         return ret;
     }
-#endif
+#endif // HAS_HDI_SENSOR_LITE_PRAT
     return SENSOR_OK;
 }
 
@@ -240,7 +240,7 @@ int32_t SubscribeSensorImpl(int32_t sensorId, const SensorUser *user)
             SENSOR_SERVICE, __func__, ret);
         return SENSOR_ERROR_INVALID_PARAM;
     }
-#endif
+#endif // HAS_HDI_SENSOR_LITE_PRAT
     return SENSOR_OK;
 }
 
@@ -270,7 +270,7 @@ int32_t UnsubscribeSensorImpl(int32_t sensorId, const SensorUser *user)
             SENSOR_SERVICE, __func__, ret);
         return SENSOR_ERROR_INVALID_PARAM;
     }
-#endif
+#endif // HAS_HDI_SENSOR_LITE_PRAT
     return SENSOR_OK;
 }
 

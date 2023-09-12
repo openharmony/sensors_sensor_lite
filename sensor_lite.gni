@@ -16,7 +16,7 @@ import("//build/ohos.gni")
 if (!defined(global_parts_info) ||
     defined(global_parts_info.sensors_hdi_sensor)) {
   has_hdi_sensor_part = true
-  sensor_default_defines += [ "-DHAS_HDI_SENSOR_LITE_PRAT" ]
+  sensor_default_defines += [ "HAS_HDI_SENSOR_LITE_PRAT" ]
 } else {
   has_hdi_sensor_part = false
 }
