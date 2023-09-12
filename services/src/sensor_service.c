@@ -231,6 +231,6 @@ static void Init(void)
 #ifdef HAS_HDI_SENSOR_LITE_PRAT
     SAMGR_GetInstance()->RegisterService((Service *)&g_sensorService);
     SAMGR_GetInstance()->RegisterDefaultFeatureApi(SENSOR_SERVICE, GET_IUNKNOWN(g_sensorService));
-#ifdef HAS_HDI_SENSOR_LITE_PRAT
+#endif
 }
 SYSEX_SERVICE_INIT(Init);
