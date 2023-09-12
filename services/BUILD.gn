@@ -37,8 +37,11 @@ executable("sensor_service") {
   ]
 
   deps = [
-    "//drivers/peripheral/sensor/hal:hdi_sensor",
     "//foundation/communication/ipc/interfaces/innerkits/c/ipc:ipc_single",
     "//foundation/systemabilitymgr/samgr_lite/samgr:samgr",
   ]
+
+  if (has_hdi_sensor_part) {
+    deps += [ "//drivers/peripheral/sensor/hal:hdi_sensor" ]
+  }
 }

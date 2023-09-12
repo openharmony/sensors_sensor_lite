@@ -228,7 +228,9 @@ static void Init(void)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin",
         SENSOR_SERVICE, __func__);
+#ifdef HAS_HDI_SENSOR_LITE_PRAT
     SAMGR_GetInstance()->RegisterService((Service *)&g_sensorService);
     SAMGR_GetInstance()->RegisterDefaultFeatureApi(SENSOR_SERVICE, GET_IUNKNOWN(g_sensorService));
+#ifdef HAS_HDI_SENSOR_LITE_PRAT
 }
 SYSEX_SERVICE_INIT(Init);

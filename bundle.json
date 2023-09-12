@@ -16,12 +16,13 @@
     "ram": "~200KB",
     "deps": {
       "components": [
-        "samgr_lite",
+        "drivers_peripheral_sensor",
+        "hilog_lite",
         "ipc",
-        "utils_base",
-        "hdi_sensor"
+        "samgr_lite",
+        "utils_lite"
       ],
-      "third_party": []
+      "third_party": [ "bounds_checking_function" ]
     },
     "build": {
       "sub_component": [
