@@ -137,7 +137,7 @@ int32_t GetSensorInfos(IOwner owner, IpcIo *reply)
             return SENSOR_ERROR_INVALID_PARAM;
         }
         ReadInt32(reply, &(notify->count));
-        uint32_t len;
+        uint32_t len = 0;
         ReadUint32(reply, &len);
         uint8_t *data = (uint8_t *)ReadBuffer(reply, (size_t)len);
         if ((notify->count <= 0) || (data == NULL)) {
@@ -169,7 +169,7 @@ int32_t GetSensorInfos(IOwner owner, IpcIo *reply)
 int32_t Notify(IOwner owner, int32_t code, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "%s begin", __func__);
-    int32_t functionId;
+    int32_t functionId = -1;
     ReadInt32(reply, &functionId);
     if (functionId == SENSOR_SERVICE_ID_GetAllSensors) {
         return GetSensorInfos(owner, reply);
@@ -212,10 +212,10 @@ int32_t SensorChannelCallback(uint32_t code, IpcIo *data, IpcIo *reply, MessageO
         HILOG_ERROR(HILOG_MODULE_APP, "%s failed, data is NULL", __func__);
         return SENSOR_ERROR_INVALID_PARAM;
     }
-    uint32_t len1;
+    uint32_t len1 = 0;
     ReadUint32(data, &len1);
     uint8_t *eventData = (uint8_t *)ReadBuffer(data, (size_t)len1);
-    uint32_t len2;
+    uint32_t len2 = 0;
     ReadUint32(data, &len2);
     uint8_t *sensorData = (uint8_t *)ReadBuffer(data, (size_t)len2);
     if ((eventData == NULL) || (sensorData == NULL)) {
