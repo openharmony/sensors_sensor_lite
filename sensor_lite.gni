@@ -18,9 +18,7 @@ sensor_default_defines = []
 if (!defined(global_parts_info) ||
     defined(global_parts_info.hdf_drivers_peripheral_sensor)) {
   has_drivers_peripheral_sensor_part = true
-  print("cfffffffffffffff  has_drivers_peripheral_sensor_part = true")
   sensor_default_defines += [ "HAS_HDI_SENSOR_LITE_PRAT" ]
 } else {
   has_drivers_peripheral_sensor_part = false
-  print("cfffffffffffffff   has_drivers_peripheral_sensor_part = false")
 }
