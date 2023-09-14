@@ -44,7 +44,7 @@ executable("sensor_service") {
     "//foundation/systemabilitymgr/samgr_lite/samgr:samgr",
   ]
 
-  if (has_hdi_sensor_part) {
+  if (has_drivers_peripheral_sensor_part) {
     deps += [ "//drivers/peripheral/sensor/hal:hdi_sensor" ]
   }
 }
