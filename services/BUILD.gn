@@ -12,6 +12,7 @@
 # limitations under the License.
 
 import("//build/lite/config/component/lite_component.gni")
+import("../sensor_lite.gni")
 
 executable("sensor_service") {
   sources = [
@@ -35,6 +36,8 @@ executable("sensor_service") {
     "//drivers/peripheral/sensor/interfaces/include",
     "//base/sensors/sensor_lite/frameworks/include",
   ]
+
+  defines = sensor_default_defines
 
   deps = [
     "//foundation/communication/ipc/interfaces/innerkits/c/ipc:ipc_single",
