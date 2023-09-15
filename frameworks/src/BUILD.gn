@@ -38,6 +38,7 @@ shared_library("sensor_client") {
     "//foundation/systemabilitymgr/samgr_lite/interfaces/kits/communication/broadcast",
     "//foundation/systemabilitymgr/samgr_lite/samgr/source",
     "//foundation/communication/ipc/interfaces/innerkits/c/ipc/include",
+    "//base/sensors/sensor_lite/interfaces/kits/native/include",
     "//base/sensors/sensor_lite/services/include",
   ]
 
