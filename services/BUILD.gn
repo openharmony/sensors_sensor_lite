@@ -33,7 +33,6 @@ executable("sensor_service") {
     "//foundation/communication/ipc/interfaces/innerkits/c/ipc/include",
     "//foundation/communication/ipc/ipc/native/c/manager/include",
     "//foundation/communication/ipc/services/dbinder/c/include",
-    "//drivers/peripheral/sensor/interfaces/include",
     "//base/sensors/sensor_lite/frameworks/include",
   ]
 
@@ -46,5 +45,6 @@ executable("sensor_service") {
 
   if (has_drivers_peripheral_sensor_part) {
     deps += [ "//drivers/peripheral/sensor/hal:hdi_sensor" ]
+    include_dirs += [ "//drivers/peripheral/sensor/interfaces/include" ]
   }
 }
