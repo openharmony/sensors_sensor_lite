@@ -33,6 +33,7 @@ static SvcIdentity g_svcIdentity = {
 int32_t InitSensorList()
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
+#ifdef HAS_HDI_SENSOR_LITE_PRAT
     if (g_sensorDevice == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s g_sensorDevice is NULL",
             SENSOR_SERVICE, __func__);
@@ -44,6 +45,7 @@ int32_t InitSensorList()
             SENSOR_SERVICE, __func__, ret);
         return SENSOR_ERROR_INVALID_PARAM;
     }
+#endif // HAS_HDI_SENSOR_LITE_PRAT
     return SENSOR_OK;
 }
 
@@ -89,18 +91,18 @@ void SetSvcIdentity(IpcIo *req, const IpcIo *reply)
     g_svcIdentity.token = sid.token;
 }
 
-#ifdef HAS_HDI_SENSOR_LITE_PRAT
 BOOL Initialize(Service *service, Identity identity)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
+#ifdef HAS_HDI_SENSOR_LITE_PRAT
     g_sensorDevice = NewSensorInterfaceInstance();
     if (g_sensorDevice == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s g_sensorDevice is NULL",
             SENSOR_SERVICE, __func__);
     }
+#endif // HAS_HDI_SENSOR_LITE_PRAT
     return TRUE;
 }
-#endif // HAS_HDI_SENSOR_LITE_PRAT
 
 BOOL MessageHandle(Service *service, Request *msg)
 {
