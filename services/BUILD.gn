@@ -34,6 +34,7 @@ executable("sensor_service") {
     "//foundation/communication/ipc/ipc/native/c/manager/include",
     "//foundation/communication/ipc/services/dbinder/c/include",
     "//base/sensors/sensor_lite/frameworks/include",
+    "//base/sensors/sensor_lite/interfaces/kits/native/include",
   ]
 
   defines = sensor_default_defines

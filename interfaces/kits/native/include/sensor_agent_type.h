@@ -45,6 +45,10 @@ extern "C" {
 #endif
 #endif
 
+#define SENSOR_ERROR_UNKNOWN (-1)
+#define SENSOR_ERROR_INVALID_ID (-2)
+#define SENSOR_ERROR_INVALID_PARAM (-3)
+#define SENSOR_OK 0
 #ifndef SENSOR_NAME_MAX_LEN
 /** Maximum length of the sensor name */
 #define SENSOR_NAME_MAX_LEN 16
@@ -170,7 +174,7 @@ typedef enum SensorMode {
     SENSOR_ON_CHANGE = 2,   /**< Real-time data reporting mode to report data upon status changes */
     SENSOR_ONE_SHOT = 3,    /**< Real-time data reporting mode to report data only once */
     SENSOR_FIFO_MODE = 4,   /**< FIFO-based data reporting mode to report data based on the <b>BatchCnt</b> setting */
-    SENSOR_MODE_MAX,        /**< Maximum sensor data reporting mode */
+    SENSOR_MAX_MODE,        /**< Maximum sensor data reporting mode */
 } SensorMode;
 
 #ifdef __cplusplus
