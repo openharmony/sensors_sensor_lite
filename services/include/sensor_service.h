@@ -38,14 +38,14 @@ extern "C" {
 #define SENSOR_SERVICE "sensor_service"
 #define SENSOR_FEATURE "sensor_feature"
 
-#define SENSOR_SERVICE_ID_GetAllSensors 0
-#define SENSOR_SERVICE_ID_ActivateSensor 1
-#define SENSOR_SERVICE_ID_DeactivateSensor 2
-#define SENSOR_SERVICE_ID_SetBatchs 3
-#define SENSOR_SERVICE_ID_SubscribeSensor 4
-#define SENSOR_SERVICE_ID_UnsubscribeSensor 5
-#define SENSOR_SERVICE_ID_SetMode 6
-#define SENSOR_SERVICE_ID_SetOption 7
+#define SENSOR_SERVICE_ID_GET_ALL_SENSORS 0
+#define SENSOR_SERVICE_ID_ACTIVATE_SENSOR 1
+#define SENSOR_SERVICE_ID_DEACTIVATE_SENSOR 2
+#define SENSOR_SERVICE_ID_SET_BATCHS 3
+#define SENSOR_SERVICE_ID_SUBSCRIBE_SENSOR 4
+#define SENSOR_SERVICE_ID_UN_SUBSCRIBE_SENSOR 5
+#define SENSOR_SERVICE_ID_SET_MODE 6
+#define SENSOR_SERVICE_ID_SET_OPTION 7
 #define SENSORMGR_LISTENER_NAME_LEN 8
 
 typedef struct SensorFeatureApi {
