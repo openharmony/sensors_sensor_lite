@@ -24,7 +24,7 @@
 int32_t GetAllSensorsInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
-    WriteInt32(reply, SENSOR_SERVICE_ID_GetAllSensors);
+    WriteInt32(reply, SENSOR_SERVICE_ID_GET_ALL_SENSORS);
     if (defaultApi == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s failed, defaultApi is null", SENSOR_SERVICE, __func__);
         WriteInt32(reply, SENSOR_ERROR_UNKNOWN);
@@ -48,7 +48,7 @@ int32_t GetAllSensorsInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *rep
 int32_t ActivateSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
-    WriteInt32(reply, SENSOR_SERVICE_ID_ActivateSensor);
+    WriteInt32(reply, SENSOR_SERVICE_ID_ACTIVATE_SENSOR);
     int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     if (defaultApi == NULL) {
@@ -66,7 +66,7 @@ int32_t ActivateSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *re
 int32_t DeactivateSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
-    WriteInt32(reply, SENSOR_SERVICE_ID_DeactivateSensor);
+    WriteInt32(reply, SENSOR_SERVICE_ID_DEACTIVATE_SENSOR);
     int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     if (defaultApi == NULL) {
@@ -84,7 +84,7 @@ int32_t DeactivateSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *
 int32_t SetBatchInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
-    WriteInt32(reply, SENSOR_SERVICE_ID_SetBatchs);
+    WriteInt32(reply, SENSOR_SERVICE_ID_SET_BATCHS);
     int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     int64_t updateInterval;
@@ -106,7 +106,7 @@ int32_t SetBatchInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 int32_t SubscribeSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
-    WriteInt32(reply, SENSOR_SERVICE_ID_SubscribeSensor);
+    WriteInt32(reply, SENSOR_SERVICE_ID_SUBSCRIBE_SENSOR);
     int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     if (defaultApi == NULL) {
@@ -125,14 +125,14 @@ int32_t SubscribeSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *r
 int32_t UnsubscribeSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
-    WriteInt32(reply, SENSOR_SERVICE_ID_UnsubscribeSensor);
+    WriteInt32(reply, SENSOR_SERVICE_ID_UN_SUBSCRIBE_SENSOR);
     int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     if (defaultApi == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "[SERVICE:%s]: %s failed, defaultApi is null", SENSOR_SERVICE, __func__);
         WriteInt32(reply, SENSOR_ERROR_UNKNOWN);
         return SENSOR_ERROR_UNKNOWN;
-    } else {    
+    } else {
         SensorUser sensorUser;
         int32_t ret = defaultApi->UnsubscribeSensor(sensorId, &sensorUser);
         WriteInt32(reply, ret);
@@ -143,7 +143,7 @@ int32_t UnsubscribeSensorInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo 
 int32_t SetModeInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
-    WriteInt32(reply, SENSOR_SERVICE_ID_SetMode);
+    WriteInt32(reply, SENSOR_SERVICE_ID_SET_MODE);
     int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     int32_t mode = -1;
@@ -163,7 +163,7 @@ int32_t SetModeInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 int32_t SetOptionInvoke(SensorFeatureApi *defaultApi, IpcIo *req, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "[SERVICE:%s]: %s begin", SENSOR_SERVICE, __func__);
-    WriteInt32(reply, SENSOR_SERVICE_ID_SetOption);
+    WriteInt32(reply, SENSOR_SERVICE_ID_SET_OPTION);
     int32_t sensorId = -1;
     ReadInt32(req, &sensorId);
     int32_t option = -1;
@@ -200,7 +200,7 @@ int32_t Invoke(IServerProxy *iProxy, int funcId, void *origin, IpcIo *req, IpcIo
         return SENSOR_ERROR_INVALID_PARAM;
     }
     SensorFeatureApi *defaultApi = (SensorFeatureApi *)iProxy;
-    if ((funcId >= 0) && (funcId <= SENSOR_SERVICE_ID_UnsubscribeSensor)) {
+    if ((funcId >= 0) && (funcId <= SENSOR_SERVICE_ID_UN_SUBSCRIBE_SENSOR)) {
         return g_invokeFuncList[funcId](defaultApi, req, reply);
     }
     return SENSOR_ERROR_INVALID_PARAM;

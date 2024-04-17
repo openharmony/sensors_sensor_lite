@@ -130,7 +130,7 @@ int32_t GetSensorInfos(IOwner owner, IpcIo *reply)
     if (notify == NULL) {
         HILOG_ERROR(HILOG_MODULE_APP, "%s notify is null", __func__);
         return SENSOR_ERROR_INVALID_PARAM;
-    } else {        
+    } else {
         ReadInt32(reply, &(notify->retCode));
         if (notify->retCode < 0) {
             HILOG_ERROR(HILOG_MODULE_APP, "%s failed, retCode: %d", __func__, notify->retCode);
@@ -171,7 +171,7 @@ int32_t Notify(IOwner owner, int32_t code, IpcIo *reply)
     HILOG_DEBUG(HILOG_MODULE_APP, "%s begin", __func__);
     int32_t functionId = -1;
     ReadInt32(reply, &functionId);
-    if (functionId == SENSOR_SERVICE_ID_GetAllSensors) {
+    if (functionId == SENSOR_SERVICE_ID_GET_ALL_SENSORS) {
         return GetSensorInfos(owner, reply);
     }
     int32_t *ret = (int32_t *)owner;
@@ -179,7 +179,7 @@ int32_t Notify(IOwner owner, int32_t code, IpcIo *reply)
         HILOG_ERROR(HILOG_MODULE_APP, "%s ret is null", __func__);
         return SENSOR_ERROR_INVALID_PARAM;
     } else {
-        if ((functionId > SENSOR_SERVICE_ID_GetAllSensors) && (functionId < SENSORMGR_LISTENER_NAME_LEN)) {
+        if ((functionId > SENSOR_SERVICE_ID_GET_ALL_SENSORS) && (functionId < SENSORMGR_LISTENER_NAME_LEN)) {
             ReadInt32(reply, ret);
             HILOG_DEBUG(HILOG_MODULE_APP, "%s ret: %d", __func__, *ret);
         } else {
@@ -263,7 +263,7 @@ int32_t RegisterSensorChannel(const void *proxy, int32_t sensorId)
         return SENSOR_ERROR_INVALID_PARAM;
     }
     int32_t retCode = -1;
-    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_SubscribeSensor, &request, &retCode, Notify);
+    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_SUBSCRIBE_SENSOR, &request, &retCode, Notify);
     if ((ret != SENSOR_OK) || (retCode != SENSOR_OK)) {
         HILOG_ERROR(HILOG_MODULE_APP, "%s failed, ret: %d, retCode: %d", __func__, ret, retCode);
         return SENSOR_ERROR_INVALID_PARAM;
@@ -292,7 +292,7 @@ int32_t UnregisterSensorChannel(const void *proxy, int32_t sensorId)
             return SENSOR_ERROR_INVALID_PARAM;
         } else {
             int32_t retCode = -1;
-            int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_UnsubscribeSensor, &request, &retCode, Notify);
+            int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_UN_SUBSCRIBE_SENSOR, &request, &retCode, Notify);
             if ((ret != SENSOR_OK) || (retCode != SENSOR_OK)) {
                 HILOG_ERROR(HILOG_MODULE_APP, "%s failed, ret: %d, retCode: %d", __func__, ret, retCode);
                 return SENSOR_ERROR_INVALID_PARAM;
@@ -323,7 +323,7 @@ int32_t InitSensorList(const void *proxy)
     char data[MAX_IO_SIZE];
     IpcIoInit(&request, data, MAX_IO_SIZE, IPC_MAX_OBJECTS);
     IClientProxy *client = (IClientProxy *)proxy;
-    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_GetAllSensors, &request, &owner, Notify);
+    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_GET_ALL_SENSORS, &request, &owner, Notify);
     if ((ret != SENSOR_OK) || (owner.retCode != SENSOR_OK)) {
         HILOG_ERROR(HILOG_MODULE_APP, "%s failed, ret: %d, retCode: %d", __func__, ret, owner.retCode);
         return SENSOR_ERROR_INVALID_PARAM;
@@ -364,7 +364,7 @@ int32_t ActivateSensorByProxy(const void *proxy, int32_t sensorId, const SensorU
     WriteInt32(&request, sensorId);
     int32_t retCode = -1;
     IClientProxy *client = (IClientProxy *)proxy;
-    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_ActivateSensor, &request, &retCode, Notify);
+    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_ACTIVATE_SENSOR, &request, &retCode, Notify);
     if ((ret != SENSOR_OK) || (retCode != SENSOR_OK)) {
         HILOG_ERROR(HILOG_MODULE_APP, "%s failed, ret: %d, retCode: %d", __func__, ret, retCode);
         return SENSOR_ERROR_INVALID_PARAM;
@@ -385,7 +385,7 @@ int32_t DeactivateSensorByProxy(const void *proxy, int32_t sensorId, const Senso
     WriteInt32(&request, sensorId);
     int32_t retCode = -1;
     IClientProxy *client = (IClientProxy *)proxy;
-    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_DeactivateSensor, &request, &retCode, Notify);
+    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_DEACTIVATE_SENSOR, &request, &retCode, Notify);
     if ((ret != SENSOR_OK) || (retCode != SENSOR_OK)) {
         HILOG_ERROR(HILOG_MODULE_APP, "%s failed, ret: %d, retCode: %d", __func__, ret, retCode);
         return SENSOR_ERROR_INVALID_PARAM;
@@ -409,7 +409,7 @@ int32_t SetBatchByProxy(const void *proxy, int32_t sensorId, const SensorUser *u
     WriteInt64(&request, reportInterval);
     int32_t retCode = -1;
     IClientProxy *client = (IClientProxy *)proxy;
-    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_SetBatchs, &request, &retCode, Notify);
+    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_SET_BATCHS, &request, &retCode, Notify);
     if ((ret != SENSOR_OK) || (retCode != SENSOR_OK)) {
         HILOG_ERROR(HILOG_MODULE_APP, "%s failed, ret: %d, retCode: %d", __func__, ret, retCode);
         return SENSOR_ERROR_INVALID_PARAM;
@@ -494,7 +494,7 @@ int32_t SetModeByProxy(const void *proxy, int32_t sensorId, const SensorUser *us
     WriteInt32(&request, mode);
     int32_t retCode = -1;
     IClientProxy *client = (IClientProxy *)proxy;
-    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_SetMode, &request, &retCode, Notify);
+    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_SET_MODE, &request, &retCode, Notify);
     if ((ret != SENSOR_OK) || (retCode != SENSOR_OK)) {
         HILOG_ERROR(HILOG_MODULE_APP, "%s failed, ret: %d, retCode: %d", __func__, ret, retCode);
         return SENSOR_ERROR_INVALID_PARAM;
@@ -516,7 +516,7 @@ int32_t SetOptionByProxy(const void *proxy, int32_t sensorId, const SensorUser *
     WriteInt32(&request, option);
     int32_t retCode = -1;
     IClientProxy *client = (IClientProxy *)proxy;
-    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_SetOption, &request, &retCode, Notify);
+    int32_t ret = client->Invoke(client, SENSOR_SERVICE_ID_SET_OPTION, &request, &retCode, Notify);
     if ((ret != SENSOR_OK) || (retCode != SENSOR_OK)) {
         HILOG_ERROR(HILOG_MODULE_APP, "%s failed, ret: %d, retCode: %d", __func__, ret, retCode);
         return SENSOR_ERROR_INVALID_PARAM;
