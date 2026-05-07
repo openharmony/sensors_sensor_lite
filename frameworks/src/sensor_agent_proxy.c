@@ -198,6 +198,10 @@ void DispatchData(SensorEvent *sensorEvent)
         return;
     }
     int32_t sensorId = sensorEvent->sensorTypeId;
+    if ((sensorId >= (int32_t)SENSOR_TYPE_ID_MAX) || (sensorId < 0)) {
+        HILOG_ERROR(HILOG_MODULE_APP, "%s invalid sensor type id: %d", __func__, sensorId);
+        return;
+    }
     CallbackNode *node = (CallbackNode *)(g_callbackNodes[sensorId].next);
     while (node != NULL) {
         node->callback(sensorEvent);
