@@ -21,6 +21,8 @@
 #include "sensor_agent.h"
 #include "sensor_service.h"
 
+#define MAX_SENSOR_ALLOC_SIZE (256 * sizeof(SensorInfo))
+
 static SensorInfo *g_sensorLists;
 static SensorEvent *g_sensorEvent;
 static int32_t g_sensorListsLength;
@@ -123,47 +125,96 @@ typedef struct SensorNotifyBuffer {
     SensorInfo **sensorInfo;
 } SensorNotifyBuffer;
 
+static int32_t ValidateSensorIpcParams(int32_t count, uint32_t len, uint32_t *expectedLen)
+{
+    if (count <= 0) {
+        HILOG_ERROR(HILOG_MODULE_APP, "count is invalid: %d", count);
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+    *expectedLen = sizeof(SensorInfo) * (uint32_t)count;
+    // Check for integer overflow
+    if (*expectedLen < sizeof(SensorInfo)) {
+        HILOG_ERROR(HILOG_MODULE_APP, "integer overflow detected: count=%d", count);
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+    if (len != *expectedLen) {
+        HILOG_ERROR(HILOG_MODULE_APP, "data length mismatch: len=%u, expected=%u", len, *expectedLen);
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+    return SENSOR_OK;
+}
+
+static int32_t CopySensorDataSafe(SensorInfo *dst, const SensorInfo *src, int32_t count, uint32_t bufferLen)
+{
+    for (int32_t i = 0; i < count; i++) {
+        size_t srcOffset = (i + 1) * sizeof(SensorInfo);
+        if (srcOffset > (size_t)bufferLen) {
+            HILOG_ERROR(HILOG_MODULE_APP, "would read beyond buffer: offset=%zu, len=%u", srcOffset, bufferLen);
+            return SENSOR_ERROR_INVALID_PARAM;
+        }
+        if (memcpy_s(dst + i, sizeof(SensorInfo), src + i, sizeof(SensorInfo)) != 0) {
+            HILOG_ERROR(HILOG_MODULE_APP, "copy sensorInfo failed at index %d", i);
+            return SENSOR_ERROR_INVALID_PARAM;
+        }
+    }
+    return SENSOR_OK;
+}
+
 int32_t GetSensorInfos(IOwner owner, IpcIo *reply)
 {
     HILOG_DEBUG(HILOG_MODULE_APP, "%s begin", __func__);
     SensorNotifyBuffer *notify = (SensorNotifyBuffer *)owner;
     if (notify == NULL) {
-        HILOG_ERROR(HILOG_MODULE_APP, "%s notify is null", __func__);
+        HILOG_ERROR(HILOG_MODULE_APP, "notify is null");
         return SENSOR_ERROR_INVALID_PARAM;
-    } else {
-        ReadInt32(reply, &(notify->retCode));
-        if (notify->retCode < 0) {
-            HILOG_ERROR(HILOG_MODULE_APP, "%s failed, retCode: %d", __func__, notify->retCode);
-            return SENSOR_ERROR_INVALID_PARAM;
-        }
-        ReadInt32(reply, &(notify->count));
-        uint32_t len = 0;
-        ReadUint32(reply, &len);
-        uint8_t *data = (uint8_t *)ReadBuffer(reply, (size_t)len);
-        if ((notify->count <= 0) || (data == NULL)) {
-            HILOG_ERROR(HILOG_MODULE_APP, "%s failed, count is incorrect or dataBuf is NULL or buff is NULL", __func__);
-            notify->retCode = SENSOR_ERROR_INVALID_PARAM;
-            return SENSOR_ERROR_INVALID_PARAM;
-        }
-        SensorInfo *sensorInfo = (SensorInfo *)(data);
-        *(notify->sensorInfo) = (SensorInfo *)malloc(sizeof(SensorInfo) * notify->count);
-        if (*(notify->sensorInfo) == NULL) {
-            HILOG_ERROR(HILOG_MODULE_APP, "%s malloc sensorInfo failed", __func__);
-            notify->retCode = SENSOR_ERROR_INVALID_PARAM;
-            return SENSOR_ERROR_INVALID_PARAM;
-        }
-        for (int32_t i = 0; i < notify->count; i++) {
-            if (memcpy_s((*(notify->sensorInfo) + i), sizeof(SensorInfo), (sensorInfo + i),
-                sizeof(SensorInfo))) {
-                HILOG_ERROR(HILOG_MODULE_APP, "%s copy sensorInfo failed", __func__);
-                free(*(notify->sensorInfo));
-                *(notify->sensorInfo) = NULL;
-                notify->retCode = SENSOR_ERROR_INVALID_PARAM;
-                return SENSOR_ERROR_INVALID_PARAM;
-            }
-        }
-        return notify->retCode;
     }
+
+    ReadInt32(reply, &(notify->retCode));
+    if (notify->retCode < 0) {
+        HILOG_ERROR(HILOG_MODULE_APP, "retCode error: %d", notify->retCode);
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+
+    ReadInt32(reply, &(notify->count));
+    uint32_t len = 0;
+    ReadUint32(reply, &len);
+
+    uint32_t expectedLen = 0;
+    if (ValidateSensorIpcParams(notify->count, len, &expectedLen) != SENSOR_OK) {
+        notify->retCode = SENSOR_ERROR_INVALID_PARAM;
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+
+    uint8_t *data = (uint8_t *)ReadBuffer(reply, (size_t)len);
+    if (data == NULL) {
+        HILOG_ERROR(HILOG_MODULE_APP, "dataBuf is NULL");
+        notify->retCode = SENSOR_ERROR_INVALID_PARAM;
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+
+    // Check malloc size is reasonable and non-zero
+    if (expectedLen == 0 || expectedLen > MAX_SENSOR_ALLOC_SIZE) {
+        HILOG_ERROR(HILOG_MODULE_APP, "invalid malloc size: %u", expectedLen);
+        notify->retCode = SENSOR_ERROR_INVALID_PARAM;
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+
+    SensorInfo *sensorInfo = (SensorInfo *)data;
+    *(notify->sensorInfo) = (SensorInfo *)malloc(expectedLen);
+    if (*(notify->sensorInfo) == NULL) {
+        HILOG_ERROR(HILOG_MODULE_APP, "malloc sensorInfo failed");
+        notify->retCode = SENSOR_ERROR_INVALID_PARAM;
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+
+    if (CopySensorDataSafe(*(notify->sensorInfo), sensorInfo, notify->count, len) != SENSOR_OK) {
+        free(*(notify->sensorInfo));
+        *(notify->sensorInfo) = NULL;
+        notify->retCode = SENSOR_ERROR_INVALID_PARAM;
+        return SENSOR_ERROR_INVALID_PARAM;
+    }
+
+    return notify->retCode;
 }
 
 int32_t Notify(IOwner owner, int32_t code, IpcIo *reply)
